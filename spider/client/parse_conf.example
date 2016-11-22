@@ -1,0 +1,29 @@
+{
+    "root": [
+    {
+        "type":"dom",
+        "name":"xiao_liebiao",
+        "xpath":"//div[@class='xiao_liebiao']"
+    },
+    {
+        "type":"url",
+        "name":"locoso_detail",
+        "xpath":"//div[@class='zuo01']/div[@class='zuo01_bt'][1]/a/@href"
+    }
+    ],
+
+    "xiao_liebiao": [
+    {
+        "type":"string",
+        "name":"name",
+        "xpath":".//div[@class='zuo01_bt'][1]/a/b/text()",
+        "is_list": 0
+    },
+    {
+        "type": "string",
+        "name": "introduce",
+        "xpath":".//div[@class='zuo01_con']/div[1]/text()",
+        "is_list": 0
+    }
+    ]
+}

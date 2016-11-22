@@ -1,0 +1,17 @@
+Exception AttributeError: "'Cursor' object has no attribute '_Cursor__id'" in <bound method Cursor.__del__ of <pymongo.cursor.Cursor object at 0x2b4a80599990>> ignored
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/threading.py", line 810, in __bootstrap_inner
+    self.run()
+  File "../lib/timer.py", line 26, in run
+    self.fun(**self.kwargs)
+  File "initializer.py", line 76, in scan_site
+    cursor = db.site.find(snapshort=True)
+  File "/usr/local/lib/python2.7/site-packages/pymongo/collection.py", line 1013, in find
+    return Cursor(self, *args, **kwargs)
+TypeError: __init__() got an unexpected keyword argument 'snapshort'
+
+  File "initializer.py", line 98
+    db.new_site.update({},{$set:{'init_urls':[]}},{multi:true})
+                           ^
+SyntaxError: invalid syntax
