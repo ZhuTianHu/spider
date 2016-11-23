@@ -219,7 +219,7 @@ application = tornado.web.Application([
     (r"/task_filter/tasks", TaskFilterTaskHandler),
     (r"/task_filter/bloom_filters", TaskFilterBloomFilterHandler)])
 
-http_server =tornado.httpserver.HTTPServer(application)
+http_server =tornado.httpserver.HTTPServer(application, no_keep_alive=True)
 http_server.listen(options.port)
 
 signal.signal(signal.SIGTERM, sig_handler)
