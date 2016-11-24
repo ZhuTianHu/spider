@@ -38,7 +38,6 @@ def shutdown():
 
     import time
     deadline = time.time() + MAX_WAIT_SECONDS_BEFORE_SHUTDOWN
- 
     def stop_loop():
         now = time.time()
         if now < deadline and (io_loop._callbacks or io_loop._timeouts):
@@ -51,7 +50,6 @@ def shutdown():
 def sig_handler(sig, frame):
     """
     graceful shutdown tornado web server
-    
     reference:
     https://gist.github.com/mywaiting/4643396
     """
@@ -219,7 +217,7 @@ application = tornado.web.Application([
     (r"/task_filter/tasks", TaskFilterTaskHandler),
     (r"/task_filter/bloom_filters", TaskFilterBloomFilterHandler)])
 
-http_server =tornado.httpserver.HTTPServer(application)
+http_server =tornado.httpserver.HTTPServer(application, no_keep_alive = True)
 http_server.listen(options.port)
 
 signal.signal(signal.SIGTERM, sig_handler)
