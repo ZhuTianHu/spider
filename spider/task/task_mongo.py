@@ -105,7 +105,7 @@ class Task(object):
         cur_time = int(time.time())
 
         exec_time = cur_time + (2 ** (retry % 5) - 1) * 30 + crawl_interval 
-        port = ramdom.sample(self.port_list, 1)[0]
+        port = ramdom.choice(self.port_list)
         task = {
                 "url": url,
                 "uid": uid,
@@ -283,7 +283,7 @@ class Task(object):
                     priority = 1
                 else:
                     priority = site_info['priority'] 
-                ret[site_info['task_type']] = priority
+                ret[site_info['site_name']] = priority
         except:
             return {}
         return ret

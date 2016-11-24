@@ -113,7 +113,8 @@ class TaskScheduler(object):
         Args:
             max_size: Max number of tasks to be stored.
         """
-        self.prority_collection_dict = {
+        self.priority = [16,8,4,2,1]
+        self.priority_collection_dict = {
                 1:  _SiteCollection(),
                 2:  _SiteCollection(),
                 4:  _SiteCollection(),
@@ -141,7 +142,7 @@ class TaskScheduler(object):
     def _random_priority(self):
         """Get a random priority to choose one site collection."""
         collection_status = 0
-        for priority, site_collection in self.prority_collection_dict.iteritems():
+        for priority, site_collection in self.priority_collection_dict.iteritems():
             collection_status += priority * site_collection.is_alive()
         if collection_status == 0:
             return 0
@@ -154,12 +155,21 @@ class TaskScheduler(object):
             ret_priority <<= 1
         return ret_priority
 
+    def get_priority(self):
+        """ Get task, return the highest priority task collection"""
+        for priority in self.priority:
+            if priority_collection_dict[priority].is_alive():
+                return priority 
+            else:
+                continue
+        return
+
     def get(self):
         """Get task, return None if failed."""
-        priority = self._random_priority()
+        priority = self.get_priority()
         if not priority:
             return None
-        site_collection = self.prority_collection_dict[priority]
+        site_collection = self.priority_collection_dict[priority]
         task = site_collection.get()
         if not task:
             return None
@@ -187,7 +197,7 @@ class TaskScheduler(object):
             # Priority of site is wrong
             return 3
 
-        site_collection = self.prority_collection_dict[priority]
+        site_collection = self.priority_collection_dict[priority]
         site_collection.put(site_name, task)
         return 0
 
@@ -201,7 +211,7 @@ class TaskScheduler(object):
                 'size': self.cur_size,
                 'data': []
                 } 
-        for priority, site_collection in self.prority_collection_dict.iteritems():
+        for priority, site_collection in self.priority_collection_dict.iteritems():
             ret['data'].append({
                 'priority': priority,
                 'size': site_collection.status()
