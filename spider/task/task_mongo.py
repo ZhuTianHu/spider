@@ -73,7 +73,7 @@ class Task(object):
         """
         try:
             task = next(cursor, None)
-            return task
+            return task 
         except Exception, e:
             logging.error("Failed to read task, msg: %s" % e)
             return None
