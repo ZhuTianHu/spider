@@ -9,7 +9,7 @@ import hashlib
 import json
 import urlparse
 import requests
-
+import random
 import pymongo
 from bson.objectid import ObjectId
 from bson import json_util
@@ -21,7 +21,6 @@ from conf import mongo_conf
 
 class Task(object):
     """Task management.
-
     Deal with task through mongodb.
     """
     def __init__(self):
@@ -34,7 +33,7 @@ class Task(object):
         self.load_system_config()
         self.task_filter = task_filter.TaskFilter(self.get_master_host())
         self.record_server_host = self.get_record_server_host()
-
+        self.port_list = ["9001", "9002", "9003", "9004"]
     def load_system_config(self):
         """Load system config from mongodb."""
         cursor = self.spider_db.conf.find()
@@ -106,7 +105,7 @@ class Task(object):
         cur_time = int(time.time())
 
         exec_time = cur_time + (2 ** (retry % 5) - 1) * 30 + crawl_interval 
-
+        port = ramdom.sample(self.port_list, 1)
         task = {
                 "url": url,
                 "uid": uid,
@@ -118,7 +117,8 @@ class Task(object):
                 "status_time": cur_time,
                 "create_time": cur_time,
                 "retry": retry,
-                "exec_time": exec_time
+                "exec_time": exec_time,
+                "port" : port
                 }
         if depth >= 0:
             task['depth'] = depth
