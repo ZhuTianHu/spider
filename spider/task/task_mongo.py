@@ -33,7 +33,7 @@ class Task(object):
         self.load_system_config()
         self.task_filter = task_filter.TaskFilter(self.get_master_host())
         self.record_server_host = self.get_record_server_host()
-        self.port_list = ["9001", "9002", "9003", "9004"]
+        self.port_list = [9001, 9002, 9003, 9004]
     def load_system_config(self):
         """Load system config from mongodb."""
         cursor = self.spider_db.conf.find()
@@ -53,13 +53,13 @@ class Task(object):
         else:
             return None
 
-    def find_task(self):
+    def find_task(self, port):
         """Get available tasks whose status is 0.
         
         Returns:
             An instance of cursor corresponding to this query.
         """
-        return self.spider_db.task.find({'status' : 0})
+        return self.spider_db.task.find({'status' : 0, 'port' : port})
 
     def get_task(self, cursor):
         """Get one task by iterate cursor.
@@ -105,7 +105,7 @@ class Task(object):
         cur_time = int(time.time())
 
         exec_time = cur_time + (2 ** (retry % 5) - 1) * 30 + crawl_interval 
-        port = ramdom.sample(self.port_list, 1)
+        port = ramdom.sample(self.port_list, 1)[0]
         task = {
                 "url": url,
                 "uid": uid,

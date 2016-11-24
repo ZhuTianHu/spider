@@ -46,7 +46,7 @@ class SpiderMaster(object):
 
     def read_task(self):
         """Read task into memory of master."""
-        cursor = self.task_obj.find_task()
+        cursor = self.task_obj.find_task(options.port)
         add_num = 0
         cur_time = int(time.time())
         while add_num < self.PER_READ_NUM:
