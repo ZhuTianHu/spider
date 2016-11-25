@@ -158,7 +158,7 @@ class TaskScheduler(object):
     def get_priority(self):
         """ Get task, return the highest priority task collection"""
         for priority in self.priority:
-            if priority_collection_dict[priority].is_alive():
+            if self.priority_collection_dict[priority].is_alive():
                 return priority 
             else:
                 continue
