@@ -129,6 +129,20 @@ class ClientScheduler(object):
         except Exception, e:
             logging.error("Failed to check client alive, msg: %s" % e)
 
+    # def _get_machine_ip(self):
+    #     """Get a machine when schedule the clients.
+        
+    #     Returns:
+    #         A string indicates the machine's ip, or None if can not get a
+    #         machine.
+    #     """
+    #     try:
+    #         machine_index =  random.randint(0, len(self.client_dict) - 1)
+    #     except ValueError as e:
+    #         logging.error("Failed to get machine, msg: %s" % e)
+    #         return None
+    #     return self.client_dict.keys()[machine_index]
+
     def _get_machine_ip(self):
         """Get a machine when schedule the clients.
         
@@ -137,12 +151,13 @@ class ClientScheduler(object):
             machine.
         """
         try:
-            machine_index =  random.randint(0, len(self.client_dict) - 1)
+            top_list = sorted(self.client_dict.iteritems(), key = lambda d : 
+                d[1]['free_mem'] / d[1]['total_mem'], reverse = True)[:15]
         except ValueError as e:
             logging.error("Failed to get machine, msg: %s" % e)
             return None
-        return self.client_dict.keys()[machine_index]
-    
+        return random.choice(top_list)[0]
+
 
     def _add_client(self):
         """Add a client"""
