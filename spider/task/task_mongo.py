@@ -314,21 +314,21 @@ class Task(object):
             return {}
         return ret
     
-    def get_site_name(self, task_type):
-        """Get site name of specified task type
+    # def get_site_name(self, task_type):
+    #     """Get site name of specified task type
         
-        Args:
-            A string of task type.
+    #     Args:
+    #         A string of task type.
 
-        Returns:
-            A string of site name of the task type. Return None if Failed to get
-            site name.
-        """
-        try:
-            site_name = self.spider_db.task_conf.find_one({'task_type': task_type}, {'site_name': 1}).get('site_name', None)
-        except:
-            return None
-        return site_name
+    #     Returns:
+    #         A string of site name of the task type. Return None if Failed to get
+    #         site name.
+    #     """
+    #     try:
+    #         site_name = self.spider_db.task_conf.find_one({'task_type': task_type}, {'site_name': 1}).get('site_name', None)
+    #     except:
+    #         return None
+    #     return site_name
 
     def del_by_client(self, task_id):
         """Delete task by task id.
