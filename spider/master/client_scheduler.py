@@ -244,7 +244,7 @@ class ClientScheduler(object):
                 3: Delete all client
         """
         if not self.task_num_list or len(self.task_num_list) < 3:
-            return (1, 10)
+            return (1, 50)
         if reduce((lambda x, y: x + y), self.task_num_list) == 0:
             if self.cur_client_num > 0:
                 return (3, self.cur_client_num)
@@ -265,10 +265,10 @@ class ClientScheduler(object):
                     int((self.max_client_num - self.cur_client_num) ** 0.5) + 1)
 
         if (self.task_num_list[1] >= self.task_num_list[0] and
-            self.task_num_list[2] - self.task_num_list[1] > self.cur_client_num * 5 and 
+            self.task_num_list[2] - self.task_num_list[1] > self.cur_client_num * 3 and 
             self.task_num_list[2] - self.task_num_list[1] >
             (self.task_num_list[1] - self.task_num_list[0]) / 2):
-            return (1, 1)
+            return (1, 10)
 
         if self.task_num_list[1] < self.task_num_list[0] and \
                 self.task_num_list[1] - self.task_num_list[2] > self.cur_client_num * 5 and \
