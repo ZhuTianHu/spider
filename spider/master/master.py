@@ -6,7 +6,7 @@ import sys
 import time
 import logging
 import json
-
+import subprocess
 from tornado.options import options
 
 import client_scheduler
@@ -22,7 +22,7 @@ class SpiderMaster(object):
     Manage the whole crawler. This module contains scheduler of crawler client
     and decide which task will allocate to client.
     """
-    def __init__(self, max_task_size=3000000, read_num=2000000, read_time=60,
+    def __init__(self, max_task_size=3000000, read_num=5000000, read_time=600,
                  options=None):
         """Init the master.
 
@@ -49,7 +49,13 @@ class SpiderMaster(object):
         cursor = self.task_obj.find_task(options.port)
         add_num = 0
         cur_time = int(time.time())
-        while add_num < self.PER_READ_NUM:
+        child1 = subprocess.Popen("free -m|awk 'NR==3 {print $4}'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT) 
+        child1.wait()
+        free_mem = float(child1.stdout.read().strip())
+        child2=subprocess.Popen("free -m|awk 'NR==2 {print $2}'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT) 
+        child2.wait()
+        total_mem = float(child2.stdout.read().strip())
+        while add_num < self.PER_READ_NUM and free_mem / total_mem > 0.05:
             task = self.task_obj.get_task(cursor)
             if not task:
                 break
