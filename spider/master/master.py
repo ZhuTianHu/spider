@@ -22,7 +22,7 @@ class SpiderMaster(object):
     Manage the whole crawler. This module contains scheduler of crawler client
     and decide which task will allocate to client.
     """
-    def __init__(self, max_task_size=3000000, read_num=5000000, read_time=600,
+    def __init__(self, max_task_size=3000000, read_num=200000, read_time=60,
                  options=None):
         """Init the master.
 
